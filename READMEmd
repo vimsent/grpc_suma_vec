@@ -1,0 +1,36 @@
+#Emiliano Garcia 202273622-4
+#Vicente Luongo 202073637-5
+. **INSTRUCCIONES COMPILACION**:
+
+
+1. **limpiar cache de Go**:
+
+```bash
+go clean -cache
+go clean -modcache
+```
+
+2. **reinstalar dependencias**:
+```bash
+rm -rf go.mod go.sum
+go mod init vector-sum-system
+go get google.golang.org/grpc@v1.59.0
+go get google.golang.org/protobuf@v1.31.0
+```
+
+3. **ompilar paso a paso**:
+```bash
+# Primero generar los archivos proto
+make proto
+
+# luego compilar servidor
+go build -o bin/server server/main.go
+
+# finalmente compilar cliente
+go build -o bin/client client/main.go
+```
+
+4. **ejecutar el ssistema**:
+```bash
+# opción 1: Con make
+make test

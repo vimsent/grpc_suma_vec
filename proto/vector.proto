@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package vector;
+
+option go_package = "vector-sum-system/pb";
+
+service VectorService {
+    rpc SumVectors(VectorRequest) returns (VectorResponse);
+    
+    rpc GetStats(StatsRequest) returns (StatsResponse);
+}
+
+message VectorRequest {
+    repeated Vector vectors = 1;
+}
+
+message Vector {
+    repeated float values = 1;
+}
+
+message VectorResponse {
+    Vector result = 1;
+    int32 node_id = 2;
+}
+
+message StatsRequest {}
+
+message StatsResponse {
+    int32 node_id = 1;
+    float reputation = 2;
+    int32 correct_sums = 3;
+    int32 incorrect_sums = 4;
+    int32 crashes = 5;
+}

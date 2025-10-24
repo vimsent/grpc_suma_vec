@@ -1,0 +1,15 @@
+suma_de_vectores$ make build
+protoc --go_out=. --go-grpc_out=. proto/vector.proto
+go build -o bin/server server/main.go
+# internal/abi
+/usr/local/go/src/internal/abi/runtime.go:8:7: ZeroValSize redeclared in this block
+        /usr/local/go/src/internal/abi/map.go:17:7: other declaration of ZeroValSize
+make: *** [Makefile:9: build] Error 1
+
+suma_de_vectores$ make test
+protoc --go_out=. --go-grpc_out=. proto/vector.proto
+go build -o bin/server server/main.go
+# internal/abi
+/usr/local/go/src/internal/abi/runtime.go:8:7: ZeroValSize redeclared in this block
+        /usr/local/go/src/internal/abi/map.go:17:7: other declaration of ZeroValSize
+make: *** [Makefile:9: build] Error 1
