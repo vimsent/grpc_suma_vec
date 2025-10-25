@@ -11,7 +11,7 @@ import (
     "time"
     
     "google.golang.org/grpc"
-    pb "./pb"
+    pb "vector-sum-system/pb"
 )
 
 type VectorServer struct {
