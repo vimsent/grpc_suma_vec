@@ -1,6 +1,8 @@
 module vector-sum-system
 
-go 1.25.1
+go 1.23.0
+
+toolchain go1.24.9
 
 require (
 	google.golang.org/grpc v1.59.0

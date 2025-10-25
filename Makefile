@@ -6,6 +6,7 @@ PB_DIR=pb
 BIN_DIR=bin
 SERVER_BIN=$(BIN_DIR)/server
 CLIENT_BIN=$(BIN_DIR)/client
+GOPATH_BIN ?= $(shell go env GOPATH)/bin
 
 # Crear directorios necesarios
 $(BIN_DIR):
@@ -17,9 +18,12 @@ $(PB_DIR):
 # Generar código desde proto
 proto: $(PB_DIR)
 	@echo "Generando código desde archivos proto..."
-	protoc --go_out=. --go_opt=paths=source_relative \
-		--go-grpc_out=. --go-grpc_opt=paths=source_relative \
-		$(PROTO_DIR)/vector.proto
+	@echo "Usando plugins de $(GOPATH_BIN)"
+	protoc --plugin=protoc-gen-go=$(GOPATH_BIN)/protoc-gen-go \
+	       --plugin=protoc-gen-go-grpc=$(GOPATH_BIN)/protoc-gen-go-grpc \
+	       --go_out=. \
+	       --go-grpc_out=. \
+	       $(PROTO_DIR)/vector.proto
 
 # Compilar servidor
 build-server: $(BIN_DIR)
@@ -83,15 +87,15 @@ test: clean build
 clean:
 	@echo "Limpiando archivos generados..."
 	@rm -rf $(BIN_DIR) $(PB_DIR) output.txt *.log
-	@make kill-servers
+	@-make kill-servers
 	@echo "Limpieza completada"
 
 # Instalar dependencias
 deps:
-	@echo "Instalando dependencias..."
+	@echo "Instalando dependencias (forzando recompilación)..."
 	go mod download
-	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+	go install -a -v google.golang.org/protobuf/cmd/protoc-gen-go@latest
+	go install -a -v google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 	@echo "Dependencias instaladas"
 
 # Ayuda

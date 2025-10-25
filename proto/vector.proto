@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package vector;
 
-option go_package = "vector-sum-system/pb";
+option go_package = "./pb";
 
 service VectorService {
     rpc SumVectors(VectorRequest) returns (VectorResponse);

@@ -13,9 +13,9 @@ import (
 	status "google.golang.org/grpc/status"
 )
 
-
-
-
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+// Requires gRPC-Go v1.64.0 or later.
 const _ = grpc.SupportPackageIsVersion9
 
 const (
@@ -23,15 +23,11 @@ const (
 	VectorService_GetStats_FullMethodName   = "/vector.VectorService/GetStats"
 )
 
-
-
-
-
-// servicio para operaciones con vectores
+// VectorServiceClient is the client API for VectorService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VectorServiceClient interface {
-	
 	SumVectors(ctx context.Context, in *VectorRequest, opts ...grpc.CallOption) (*VectorResponse, error)
-	
 	GetStats(ctx context.Context, in *StatsRequest, opts ...grpc.CallOption) (*StatsResponse, error)
 }
 
@@ -63,24 +59,20 @@ func (c *vectorServiceClient) GetStats(ctx context.Context, in *StatsRequest, op
 	return out, nil
 }
 
-
-
-
-
-
+// VectorServiceServer is the server API for VectorService service.
+// All implementations must embed UnimplementedVectorServiceServer
+// for forward compatibility.
 type VectorServiceServer interface {
-
 	SumVectors(context.Context, *VectorRequest) (*VectorResponse, error)
-
 	GetStats(context.Context, *StatsRequest) (*StatsResponse, error)
 	mustEmbedUnimplementedVectorServiceServer()
 }
 
-
-
-
-
-
+// UnimplementedVectorServiceServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
 type UnimplementedVectorServiceServer struct{}
 
 func (UnimplementedVectorServiceServer) SumVectors(context.Context, *VectorRequest) (*VectorResponse, error) {
@@ -92,11 +84,18 @@ func (UnimplementedVectorServiceServer) GetStats(context.Context, *StatsRequest)
 func (UnimplementedVectorServiceServer) mustEmbedUnimplementedVectorServiceServer() {}
 func (UnimplementedVectorServiceServer) testEmbeddedByValue()                       {}
 
+// UnsafeVectorServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to VectorServiceServer will
+// result in compilation errors.
 type UnsafeVectorServiceServer interface {
 	mustEmbedUnimplementedVectorServiceServer()
 }
 
 func RegisterVectorServiceServer(s grpc.ServiceRegistrar, srv VectorServiceServer) {
+	// If the following call pancis, it indicates UnimplementedVectorServiceServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
@@ -139,6 +138,9 @@ func _VectorService_GetStats_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+// VectorService_ServiceDesc is the grpc.ServiceDesc for VectorService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
 var VectorService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "vector.VectorService",
 	HandlerType: (*VectorServiceServer)(nil),
